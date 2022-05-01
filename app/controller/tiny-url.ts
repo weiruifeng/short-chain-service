@@ -45,7 +45,7 @@ export default class TinyUrlController extends Controller {
     await this.tinyUrlService.setInfo({
       tinyUrl,
       originalUrl: params.originalUrl,
-      creator: params.originalUrl,
+      creator: params.creator,
       createDate: date.createDate,
       expireDate: date.expireDate,
     });

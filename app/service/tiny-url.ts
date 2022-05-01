@@ -2,6 +2,7 @@ import { Context, Service } from 'egg';
 import { IInfo } from 'interface';
 import TinyUrlDao from '../dao/tiny-url';
 import { encode10To62 } from '../utils';
+import { NOISE_NUMBER } from '../utils/constants';
 
 export default class TinyUrlService extends Service {
   tinyUrlDao: TinyUrlDao;
@@ -13,7 +14,7 @@ export default class TinyUrlService extends Service {
 
   async generatorID(): Promise<number> {
     const count = await this.tinyUrlDao.getMCount();
-    return count + 1;
+    return count + 1 + NOISE_NUMBER;
   }
 
   async generatorTinyUrl(): Promise<string> {
