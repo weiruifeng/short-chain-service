@@ -2,12 +2,12 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
+import ExportAuthority from '../../../app/middleware/authority';
 import ExportErrorHandler from '../../../app/middleware/error-handler';
-import ExportVisitor from '../../../app/middleware/visitor';
 
 declare module 'egg' {
   interface IMiddleware {
+    authority: typeof ExportAuthority;
     errorHandler: typeof ExportErrorHandler;
-    visitor: typeof ExportVisitor;
   }
 }

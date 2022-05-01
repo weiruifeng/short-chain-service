@@ -63,9 +63,7 @@ function validate(type: string, rule: object): any {
   return function decorators(_target: BaseContextClass, _propertyKey: string, descriptor: PropertyDescriptor) {
     const oldValue = descriptor.value;
 
-    function validateParams(ctx: Context, data: unknown) {
-      // 上报日志中心的数据收集
-      ctx.logCenter.push({ request: data });
+    function validateParams(data: unknown) {
       const error: Parameter.ValidateError[] | void = parameter.validate(rule as Parameter.ParameterRules, data);
       // 如果报错则直接写 throw 出去
       if (error) {
@@ -75,23 +73,12 @@ function validate(type: string, rule: object): any {
       return getParams(rule as Parameter.ParameterRules, data);
     }
 
-    switch (type) {
-      // 消费消息类型
-      case 'consumer':
-        descriptor.value = function consumerValue(params: string) {
-          const { ctx } = this as IDecoratorValue;
-          const data: unknown = JSON.parse(params);
-          return oldValue.apply(this, [validateParams(ctx, data)]);
-        };
-        break;
-      default:
-        descriptor.value = function httpValue() {
-          const { ctx } = this as IDecoratorValue;
-          const data: unknown = getData(type, ctx);
-          ctx.params = validateParams(ctx, data);
-          return oldValue.apply(this, [ctx]);
-        };
-    }
+    descriptor.value = function httpValue() {
+      const { ctx } = this as IDecoratorValue;
+      const data: unknown = getData(type, ctx);
+      ctx.params = validateParams(data);
+      return oldValue.apply(this, [ctx]);
+    };
     return descriptor;
   };
 }

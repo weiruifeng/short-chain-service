@@ -7,9 +7,6 @@ const promiseFunc = {
       success: true,
       data,
     } as IResponse<unknown>;
-    // 上报日志中心
-    ctx.logCenter.push({ response: ctx.body });
-    ctx.logCenter.info('success');
   },
 
   page(ctx: Context, res: { paging: IPaging, data: unknown[] }) {
@@ -18,16 +15,15 @@ const promiseFunc = {
       data: res.data,
       paging: res.paging,
     } as IPageResponse<unknown>;
-    // 上报日志中心
-    ctx.logCenter.push({ response: ctx.body });
-    ctx.logCenter.info('success');
   },
 
   file(ctx: Context, res: { name: string, file: Buffer }) {
     ctx.body = res.file;
     ctx.attachment(res.name);
-    // 上报日志中心
-    ctx.logCenter.info('success');
+  },
+
+  redirect(ctx: Context, res: { url: string }) {
+    ctx.redirect(res.url);
   },
 };
 
@@ -67,9 +63,14 @@ function fileResponse(target: BaseContextClass, propertyKey: string, descriptor:
   return decorator(target, propertyKey, descriptor, promiseFunc.file);
 }
 
+function redirect(target: BaseContextClass, propertyKey: string, descriptor: PropertyDescriptor) {
+  return decorator(target, propertyKey, descriptor, promiseFunc.redirect);
+}
+
 export {
   response,
   pageResponse,
   fileResponse,
+  redirect,
 };
 

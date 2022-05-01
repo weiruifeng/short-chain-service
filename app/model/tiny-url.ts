@@ -5,6 +5,9 @@ export interface TinyUrlAttr {
   id: number;
   tinyUrl: string;
   originalUrl: string;
+  creator: string;
+  createDate: number;
+  expireDate: number;
 }
 
 export interface TinyUrlCreationAttr extends Optional<TinyUrlAttr, 'id'> { }
@@ -16,7 +19,7 @@ export default (app: Application) => {
   const { model } = app;
 
   const ModelInstance = model.define<TinyUrlModel, TinyUrlCreationAttr>(
-    'tiny_url',
+    'url_mapping',
     {
       id: {
         type: DataTypes.BIGINT,
@@ -26,14 +29,24 @@ export default (app: Application) => {
       tinyUrl: {
         type: DataTypes.STRING(8),
         allowNull: false,
+        unique: true,
       },
       originalUrl: {
         type: DataTypes.TEXT,
         allowNull: false,
       },
-    },
-    {
-      underscored: true,
+      creator: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      createDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
+      expireDate: {
+        type: DataTypes.DATE,
+        allowNull: false,
+      },
     },
   );
 

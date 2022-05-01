@@ -6,7 +6,7 @@ export default (appInfo: EggAppInfo): any => {
   const config = {
     middleware: [
       'errorHandler',
-      'visitor',
+      'authority',
     ],
     static: {
       prefix: '/public/',
@@ -23,6 +23,9 @@ export default (appInfo: EggAppInfo): any => {
       httpOnly: true,
       encrypt: true,
     },
+  };
+
+  const bizConfig = {
     siteFile: {
       '/favicon.ico': fs.readFileSync(path.join(appInfo.baseDir, 'icon', 'favicon.ico')),
     },
@@ -35,9 +38,6 @@ export default (appInfo: EggAppInfo): any => {
         loadunit: false,
       },
     },
-  };
-
-  const bizConfig = {
     sequelize: {
       pool: {
         max: 5,
@@ -46,18 +46,12 @@ export default (appInfo: EggAppInfo): any => {
       },
       logging: true,
       define: {
-        timestamps: true,
-        paranoid: true,
+        timestamps: false,
+        paranoid: false,
         freezeTableName: true,
+        underscored: true,
       },
       timezone: '+08:00',
-    },
-    visitor: {
-      include: [],
-      exclude: [
-        // 健康检查
-        '/monitor/alive',
-      ],
     },
   };
 
