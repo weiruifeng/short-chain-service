@@ -14,6 +14,10 @@ export default class UrlMapDao extends BaseContextClass {
     return await this.model.count();
   }
 
+  async getMMaxId(): Promise<number> {
+    return await this.model.max('id');
+  }
+
   async getMDataById(id: number): Promise<UrlMapModel | null> {
     return await this.model.findByPk(id);
   }

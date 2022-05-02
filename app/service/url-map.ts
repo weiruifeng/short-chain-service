@@ -19,8 +19,8 @@ export default class UrlMapService extends Service {
   }
 
   async generatorID(): Promise<number> {
-    const count = await this.urlMapDao.getMCount();
-    return count + 1 + NOISE_NUMBER;
+    const id = await this.urlMapDao.getMMaxId();
+    return id + 1 + NOISE_NUMBER;
   }
 
   async generatorTinyUrl(): Promise<string> {
