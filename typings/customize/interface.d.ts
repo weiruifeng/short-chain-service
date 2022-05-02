@@ -1,4 +1,10 @@
 declare module 'interface' {
+
+  interface ICache {
+    get: (key: string) => unknown;
+    set: (key: string, value: unknown) => void;
+    del: (key: string) => unknown;
+  }
   interface IParamUrl {
     url: string,
   }

@@ -2,17 +2,17 @@ import { Context, Controller } from 'egg';
 import { IParamTinyUrl, IParamUrl, ITinyUrl } from 'interface';
 import { redirect, response, validate } from '../decorator';
 import { ParamValidateError } from '../error';
-import TinyUrlService from '../service/tiny-url';
+import UrlMapService from '../service/url-map';
 import { getDate } from '../utils';
 import { URL_PTEFIX } from '../utils/constants';
 
-export default class TinyUrlController extends Controller {
+export default class UrlMapController extends Controller {
 
-  tinyUrlService: TinyUrlService;
+  urlMapService: UrlMapService;
 
   constructor(ctx: Context) {
     super(ctx);
-    this.tinyUrlService = this.service.tinyUrl;
+    this.urlMapService = this.service.urlMap;
   }
 
   @redirect
@@ -25,7 +25,7 @@ export default class TinyUrlController extends Controller {
     },
   })
   async getOriginalUrl({ params }: { params: IParamUrl }): Promise<ITinyUrl> {
-    const originalUrl = await this.tinyUrlService.getOriginalUrl(params.url);
+    const originalUrl = await this.urlMapService.getOriginalUrl(params.url);
     if (!originalUrl) {
       throw new ParamValidateError('短链无效');
     }
@@ -39,10 +39,10 @@ export default class TinyUrlController extends Controller {
     expire: 'int?',
   })
   async setInfo({ params }: { params: IParamTinyUrl }): Promise<IParamUrl> {
-    const tinyUrl = await this.tinyUrlService.generatorTinyUrl();
+    const tinyUrl = await this.urlMapService.generatorTinyUrl();
     const date = getDate(params.expire);
 
-    await this.tinyUrlService.setInfo({
+    await this.urlMapService.setInfo({
       tinyUrl,
       originalUrl: params.originalUrl,
       creator: params.creator,

@@ -1,47 +1,47 @@
 import { BaseContextClass, Context } from 'egg';
 import { ModelStatic, WhereOptions } from 'sequelize';
-import { TinyUrlAttr, TinyUrlCreationAttr, TinyUrlModel } from '../model/tiny-url';
+import { UrlMapAttr, UrlMapCreationAttr, UrlMapModel } from '../model/url-map';
 
-export default class TinyUrlDao extends BaseContextClass {
-  model: ModelStatic<TinyUrlModel>;
+export default class UrlMapDao extends BaseContextClass {
+  model: ModelStatic<UrlMapModel>;
 
   constructor(ctx: Context) {
     super(ctx);
-    this.model = ctx.model.TinyUrl;
+    this.model = ctx.model.UrlMap;
   }
 
   async getMCount(): Promise<number> {
     return await this.model.count();
   }
 
-  async getMDataById(id: number): Promise<TinyUrlModel | null> {
+  async getMDataById(id: number): Promise<UrlMapModel | null> {
     return await this.model.findByPk(id);
   }
 
-  async getOneMData(option: WhereOptions<TinyUrlAttr>): Promise<TinyUrlModel | null> {
+  async getOneMData(option: WhereOptions<UrlMapAttr>): Promise<UrlMapModel | null> {
     return await this.model.findOne({
       where: option,
     });
   }
 
-  async getMDatas(whereOption: WhereOptions<TinyUrlAttr>): Promise<TinyUrlModel[]> {
+  async getMDatas(whereOption: WhereOptions<UrlMapAttr>): Promise<UrlMapModel[]> {
     return await this.model.findAll({
       where: whereOption,
       order: [['id', 'DESC']],
     });
   }
 
-  async create(option: TinyUrlCreationAttr): Promise<TinyUrlModel> {
+  async create(option: UrlMapCreationAttr): Promise<UrlMapModel> {
     return await this.model.create(option);
   }
 
-  async updateDataById(id: number, option: Partial<TinyUrlAttr>) {
+  async updateDataById(id: number, option: Partial<UrlMapAttr>) {
     return await this.model.update(option, {
       where: { id },
     });
   }
 
-  async destroy(option: WhereOptions<TinyUrlAttr>): Promise<number> {
+  async destroy(option: WhereOptions<UrlMapAttr>): Promise<number> {
     return await this.model.destroy({
       where: option,
     });

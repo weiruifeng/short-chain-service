@@ -2,10 +2,10 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportTinyUrl from '../../../app/model/tiny-url';
+import ExportUrlMap from '../../../app/model/url-map';
 
 declare module 'egg' {
   interface IModel {
-    TinyUrl: ReturnType<typeof ExportTinyUrl>;
+    UrlMap: ReturnType<typeof ExportUrlMap>;
   }
 }

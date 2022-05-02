@@ -1,7 +1,7 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { Application } from 'egg';
 
-export interface TinyUrlAttr {
+export interface UrlMapAttr {
   id: number;
   tinyUrl: string;
   originalUrl: string;
@@ -10,15 +10,15 @@ export interface TinyUrlAttr {
   expireDate: number;
 }
 
-export interface TinyUrlCreationAttr extends Optional<TinyUrlAttr, 'id'> { }
-export interface TinyUrlModel extends
-  Model<TinyUrlAttr, TinyUrlCreationAttr>,
-  TinyUrlAttr { }
+export interface UrlMapCreationAttr extends Optional<UrlMapAttr, 'id'> { }
+export interface UrlMapModel extends
+  Model<UrlMapAttr, UrlMapCreationAttr>,
+  UrlMapAttr { }
 
 export default (app: Application) => {
   const { model } = app;
 
-  const ModelInstance = model.define<TinyUrlModel, TinyUrlCreationAttr>(
+  const ModelInstance = model.define<UrlMapModel, UrlMapCreationAttr>(
     'url_mapping',
     {
       id: {

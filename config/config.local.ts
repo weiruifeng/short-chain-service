@@ -6,6 +6,10 @@ export default (): any => {
 
   const bizConfig = {
     sequelize: database.development,
+    redisConfig: {
+      host: '127.0.0.1',
+      port: 6379,
+    },
   };
 
   return {

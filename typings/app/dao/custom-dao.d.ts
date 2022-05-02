@@ -6,7 +6,7 @@ type AnyClass = new (...args: any[]) => any;
 type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
-import ExportTinyUrl from '../../../app/dao/tiny-url';
+import ExportUrlMap from '../../../app/dao/url-map';
 
 declare module 'egg' {
   interface Context {
@@ -14,6 +14,6 @@ declare module 'egg' {
   }
 
   interface T_custom_dao {
-    tinyUrl: AutoInstanceType<typeof ExportTinyUrl>;
+    urlMap: AutoInstanceType<typeof ExportUrlMap>;
   }
 }

@@ -2,10 +2,10 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportTinyUrl from '../../../app/controller/tiny-url';
+import ExportUrlMap from '../../../app/controller/url-map';
 
 declare module 'egg' {
   interface IController {
-    tinyUrl: ExportTinyUrl;
+    urlMap: ExportUrlMap;
   }
 }

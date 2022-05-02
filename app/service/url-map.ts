@@ -1,19 +1,19 @@
 import { Context, Service } from 'egg';
 import { IInfo } from 'interface';
-import TinyUrlDao from '../dao/tiny-url';
+import UrlMapDao from '../dao/url-map';
 import { encode10To62 } from '../utils';
 import { NOISE_NUMBER } from '../utils/constants';
 
-export default class TinyUrlService extends Service {
-  tinyUrlDao: TinyUrlDao;
+export default class UrlMapService extends Service {
+  urlMapDao: UrlMapDao;
 
   constructor(ctx: Context) {
     super(ctx);
-    this.tinyUrlDao = this.ctx.dao.tinyUrl;
+    this.urlMapDao = this.ctx.dao.urlMap;
   }
 
   async generatorID(): Promise<number> {
-    const count = await this.tinyUrlDao.getMCount();
+    const count = await this.urlMapDao.getMCount();
     return count + 1 + NOISE_NUMBER;
   }
 
@@ -23,11 +23,11 @@ export default class TinyUrlService extends Service {
   }
 
   async getOriginalUrl(tinyUrl: string): Promise<string> {
-    const tinyUrlMData = await this.tinyUrlDao.getOneMData({ tinyUrl });
+    const tinyUrlMData = await this.urlMapDao.getOneMData({ tinyUrl });
     return tinyUrlMData ? tinyUrlMData.originalUrl : '';
   }
 
   async setInfo(info: IInfo) {
-    return await this.tinyUrlDao.create(info);
+    return await this.urlMapDao.create(info);
   }
 }

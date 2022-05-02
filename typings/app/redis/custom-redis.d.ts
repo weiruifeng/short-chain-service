@@ -6,10 +6,14 @@ type AnyClass = new (...args: any[]) => any;
 type AnyFunc<T = any> = (...args: any[]) => T;
 type CanExportFunc = AnyFunc<Promise<any>> | AnyFunc<IterableIterator<any>>;
 type AutoInstanceType<T, U = T extends CanExportFunc ? T : T extends AnyFunc ? ReturnType<T> : T> = U extends AnyClass ? InstanceType<U> : U;
-import ExportUrlMap from '../../../app/service/url-map';
+import ExportUrlMap from '../../../app/redis/url-map';
 
 declare module 'egg' {
-  interface IService {
+  interface Context {
+    redis: T_custom_redis;
+  }
+
+  interface T_custom_redis {
     urlMap: AutoInstanceType<typeof ExportUrlMap>;
   }
 }

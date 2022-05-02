@@ -37,6 +37,20 @@ export default (appInfo: EggAppInfo): any => {
         // 是否加载框架和插件的目录
         loadunit: false,
       },
+      redis: {
+        directory: 'app/redis',
+        // 如果是 ctx 则使用 loadToContext
+        inject: 'ctx',
+        // 是否加载框架和插件的目录
+        loadunit: false,
+      },
+      cache: {
+        directory: 'app/cache',
+        // 如果是 ctx 则使用 loadToContext
+        inject: 'ctx',
+        // 是否加载框架和插件的目录
+        loadunit: false,
+      },
     },
     sequelize: {
       pool: {
