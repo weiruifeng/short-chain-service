@@ -3,7 +3,7 @@ import { EggLogger } from 'egg';
 declare module 'egg' {
   interface Application {
     redisClient: RedisClientType,
-    cache: ICache,
+    cache: ICacheClient,
   }
 
 }

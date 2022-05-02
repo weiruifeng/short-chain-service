@@ -1,10 +1,17 @@
 declare module 'interface' {
 
-  interface ICache {
+  interface IUrlMapCache {
+    id: number,
+    tinyUrl: string,
+    originalUrl: string,
+  }
+
+  interface ICacheClient {
     get: (key: string) => unknown;
     set: (key: string, value: unknown) => void;
     del: (key: string) => unknown;
   }
+
   interface IParamUrl {
     url: string,
   }
