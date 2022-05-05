@@ -6,6 +6,13 @@ declare module 'interface' {
     originalUrl: string,
   }
 
+  interface IRefreshCache {
+    pid: number,
+    type: 'GET' | 'SET' | 'DEL',
+    key: string,
+    value?: IUrlMapCache,
+  }
+
   interface ICacheClient {
     get: (key: string) => unknown;
     set: (key: string, value: unknown) => void;

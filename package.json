@@ -9,7 +9,7 @@
   "types": "typings/index.d.ts",
   "scripts": {
     "dev": "egg-bin dev --port=8080",
-    "debug": "egg-bin debug --port=8080",
+    "debug": "egg-bin debug --port=8080 --workers=2",
     "start": "egg-scripts start --daemon --title=short-chain-service --port=8080 --ignore-stderr --workers=4",
     "stop": "egg-scripts stop --title=short-chain-service",
     "tsc": "ets && tsc -p tsconfig.json",

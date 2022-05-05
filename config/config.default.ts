@@ -26,6 +26,7 @@ export default (appInfo: EggAppInfo): any => {
   };
 
   const bizConfig = {
+    cacheProcessKey: 'cache-refresh-action',
     siteFile: {
       '/favicon.ico': fs.readFileSync(path.join(appInfo.baseDir, 'icon', 'favicon.ico')),
     },
