@@ -18,12 +18,12 @@ export default class CacheService extends Service {
   async update(data: IRefreshCache) {
     switch (data.type) {
       case 'GET': {
-        this.client.get(data.key);
+        this.client.get(data.key as string);
         break;
       }
       case 'SET': {
         if (data.value) {
-          this.client.set(data.key, data.value);
+          this.client.set(data.key as string, data.value);
         }
         break;
       }
@@ -58,15 +58,13 @@ export default class CacheService extends Service {
     return this.client.set(key, value);
   }
 
-  del(key: string): IUrlMapCache | null {
-    const value = this.client.del(key) as IUrlMapCache | null;
-    if (value) {
-      this.refreshAction({
-        pid: process.pid,
-        type: 'DEL',
-        key,
-      });
-    }
-    return value;
+  del(key: string | string[]): number {
+    const count = this.client.del(key);
+    this.refreshAction({
+      pid: process.pid,
+      type: 'DEL',
+      key,
+    });
+    return count;
   }
 }

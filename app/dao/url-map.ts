@@ -1,6 +1,7 @@
 import { BaseContextClass, Context } from 'egg';
-import { ModelStatic, WhereOptions } from 'sequelize';
+import { ModelStatic, WhereOptions, Op } from 'sequelize';
 import { UrlMapAttr, UrlMapCreationAttr, UrlMapModel } from '../model/url-map';
+import { UrlMapStatueEnum } from '../utils/enum';
 
 export default class UrlMapDao extends BaseContextClass {
   model: ModelStatic<UrlMapModel>;
@@ -35,6 +36,15 @@ export default class UrlMapDao extends BaseContextClass {
     });
   }
 
+  async getExpiredMDatas(): Promise<UrlMapModel[]> {
+    return await this.getMDatas({
+      status: UrlMapStatueEnum.Normal,
+      expireDate: {
+        [Op.lt]: new Date(),
+      },
+    });
+  }
+
   async create(option: UrlMapCreationAttr): Promise<UrlMapModel> {
     return await this.model.create(option);
   }
@@ -48,6 +58,14 @@ export default class UrlMapDao extends BaseContextClass {
   async destroy(option: WhereOptions<UrlMapAttr>): Promise<number> {
     return await this.model.destroy({
       where: option,
+    });
+  }
+
+  async bulkCreate(records: UrlMapCreationAttr[], fields: (keyof UrlMapAttr)[]): Promise<UrlMapModel[]> {
+    return await this.model.bulkCreate(records, {
+      validate: true,
+      fields,
+      updateOnDuplicate: fields,
     });
   }
 }

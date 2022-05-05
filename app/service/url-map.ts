@@ -6,6 +6,7 @@ import UrlMapCache from './cache';
 import BloomFilter from './bloom-filter';
 import { encode10To62 } from '../utils';
 import { NOISE_NUMBER } from '../utils/constants';
+import { UrlMapStatueEnum } from '../utils/enum';
 
 export default class UrlMapService extends Service {
   urlMapDao: UrlMapDao;
@@ -41,7 +42,7 @@ export default class UrlMapService extends Service {
       this.urlMapCache.set(tinyUrl, redis);
       return redis.originalUrl;
     }
-    const urlMapMData = await this.urlMapDao.getOneMData({ tinyUrl });
+    const urlMapMData = await this.urlMapDao.getOneMData({ tinyUrl, status: UrlMapStatueEnum.Normal });
     if (urlMapMData) {
       this.urlMapCache.set(tinyUrl, {
         id: urlMapMData.id,

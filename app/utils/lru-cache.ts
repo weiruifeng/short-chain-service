@@ -71,14 +71,21 @@ export default function LRVCache(n: number) {
     link.insert(node);
     map.set(key, node);
   };
-  const del = (key: string) => {
-    const currentNode = map.get(key);
-    if (!currentNode) {
-      return null;
+
+  const del = (keys: string | string[]): number => {
+    let count = 0;
+    if (typeof keys === 'string') {
+      keys = [keys];
     }
-    link.remove(currentNode);
-    map.delete(key);
-    return currentNode.value;
+    keys.forEach(key => {
+      const currentNode = map.get(key);
+      if (currentNode) {
+        link.remove(currentNode);
+        map.delete(key);
+        count++;
+      }
+    });
+    return count;
   };
   return {
     get,

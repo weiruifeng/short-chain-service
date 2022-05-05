@@ -1,5 +1,7 @@
 declare module 'interface' {
 
+  type TStatus = 0 | 1;
+
   interface IUrlMapCache {
     id: number,
     tinyUrl: string,
@@ -9,7 +11,7 @@ declare module 'interface' {
   interface IRefreshCache {
     pid: number,
     type: 'GET' | 'SET' | 'DEL',
-    key: string,
+    key: string | string[],
     value?: IUrlMapCache,
   }
 
@@ -21,7 +23,7 @@ declare module 'interface' {
   interface ICacheClient {
     get: (key: string) => unknown;
     set: (key: string, value: unknown) => void;
-    del: (key: string) => unknown;
+    del: (key: string | string[]) => number;
   }
 
   interface IParamUrl {
