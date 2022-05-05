@@ -24,6 +24,7 @@
     "url": "ssh://git@git.sankuai.com/myfe/short-chain-service.git"
   },
   "dependencies": {
+    "bloom-filters": "^3.0.0",
     "egg": "^2.28.0",
     "egg-sequelize": "^6.0.0",
     "egg-session": "^3.3.0",

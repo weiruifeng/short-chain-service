@@ -1,7 +1,8 @@
-import { BaseContextClass, Context } from 'egg';
+import { Context, Service } from 'egg';
 import { ICacheClient, IRefreshCache, IUrlMapCache } from 'interface';
+import { CACHE_PROCESS_KEY } from '../utils/constants';
 
-export default class UrlMapCache extends BaseContextClass {
+export default class CacheService extends Service {
   client: ICacheClient;
 
   constructor(ctx: Context) {
@@ -10,9 +11,8 @@ export default class UrlMapCache extends BaseContextClass {
   }
 
   refreshAction(data: IRefreshCache) {
-    const key = this.app.config.cacheProcessKey;
     // 向多进程发送消息
-    this.app.messenger.sendToApp(key, data);
+    this.app.messenger.sendToApp(CACHE_PROCESS_KEY, data);
   }
 
   async update(data: IRefreshCache) {

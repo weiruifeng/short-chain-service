@@ -2,7 +2,8 @@ import { Context, Service } from 'egg';
 import { IInfo } from 'interface';
 import UrlMapDao from '../dao/url-map';
 import UrlMapRedis from '../redis/url-map';
-import UrlMapCache from '../cache/url-map';
+import UrlMapCache from './cache';
+import BloomFilter from './bloom-filter';
 import { encode10To62 } from '../utils';
 import { NOISE_NUMBER } from '../utils/constants';
 
@@ -10,12 +11,14 @@ export default class UrlMapService extends Service {
   urlMapDao: UrlMapDao;
   urlMapRedis: UrlMapRedis;
   urlMapCache: UrlMapCache;
+  bloomFilter: BloomFilter;
 
   constructor(ctx: Context) {
     super(ctx);
+    this.urlMapRedis = this.app.redis.urlMap;
     this.urlMapDao = this.ctx.dao.urlMap;
-    this.urlMapRedis = this.ctx.redis.urlMap;
-    this.urlMapCache = this.ctx.cache.urlMap;
+    this.urlMapCache = this.ctx.service.cache;
+    this.bloomFilter = this.ctx.service.bloomFilter;
   }
 
   async generatorID(): Promise<number> {
@@ -57,5 +60,6 @@ export default class UrlMapService extends Service {
       tinyUrl: urlMapMData.tinyUrl,
       originalUrl: urlMapMData.originalUrl,
     });
+    await this.bloomFilter.add(info.originalUrl);
   }
 }

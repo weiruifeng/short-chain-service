@@ -1,26 +1,24 @@
-import { BaseContextClass, Context } from 'egg';
+import { Application } from 'egg';
 import { IUrlMapCache } from 'interface';
-import { RedisClientType } from 'redis';
 
-export default class UrlMapRedis extends BaseContextClass {
-  client: RedisClientType;
+export default class UrlMapRedis {
+  app: Application;
 
-  constructor(ctx: Context) {
-    super(ctx);
-    this.client = this.app.redisClient;
+  constructor(app: Application) {
+    this.app = app;
   }
 
   async get(key: string): Promise<IUrlMapCache> {
-    const redisValue = await this.client.get(key);
+    const redisValue = await this.app.redisClient.get(key);
     return redisValue ? JSON.parse(redisValue) : null;
   }
 
   async set(key: string, value: IUrlMapCache) {
     const redisValue = JSON.stringify(value);
-    return await this.client.set(key, redisValue);
+    return await this.app.redisClient.set(key, redisValue);
   }
 
   async del(key: string) {
-    return await this.client.del(key);
+    return await this.app.redisClient.del(key);
   }
 }

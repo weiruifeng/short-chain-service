@@ -26,7 +26,6 @@ export default (appInfo: EggAppInfo): any => {
   };
 
   const bizConfig = {
-    cacheProcessKey: 'cache-refresh-action',
     siteFile: {
       '/favicon.ico': fs.readFileSync(path.join(appInfo.baseDir, 'icon', 'favicon.ico')),
     },
@@ -40,15 +39,7 @@ export default (appInfo: EggAppInfo): any => {
       },
       redis: {
         directory: 'app/redis',
-        // 如果是 ctx 则使用 loadToContext
-        inject: 'ctx',
-        // 是否加载框架和插件的目录
-        loadunit: false,
-      },
-      cache: {
-        directory: 'app/cache',
-        // 如果是 ctx 则使用 loadToContext
-        inject: 'ctx',
+        inject: 'app',
         // 是否加载框架和插件的目录
         loadunit: false,
       },

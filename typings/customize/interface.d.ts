@@ -13,6 +13,11 @@ declare module 'interface' {
     value?: IUrlMapCache,
   }
 
+  interface IRefreshBloom {
+    pid: number,
+    value: JSON,
+  }
+
   interface ICacheClient {
     get: (key: string) => unknown;
     set: (key: string, value: unknown) => void;

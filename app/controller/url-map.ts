@@ -3,16 +3,19 @@ import { IParamTinyUrl, IParamUrl, ITinyUrl } from 'interface';
 import { redirect, response, validate } from '../decorator';
 import { ParamValidateError } from '../error';
 import UrlMapService from '../service/url-map';
+import BloomFilterService from '../service/bloom-filter';
 import { getDate } from '../utils';
 import { URL_PTEFIX } from '../utils/constants';
 
 export default class UrlMapController extends Controller {
 
   urlMapService: UrlMapService;
+  bloomFilter: BloomFilterService;
 
   constructor(ctx: Context) {
     super(ctx);
     this.urlMapService = this.service.urlMap;
+    this.bloomFilter = this.service.bloomFilter;
   }
 
   @redirect
@@ -39,6 +42,10 @@ export default class UrlMapController extends Controller {
     expire: 'int?',
   })
   async setInfo({ params }: { params: IParamTinyUrl }): Promise<IParamUrl> {
+    const bloomFlag = this.service.bloomFilter.has(params.originalUrl);
+    if (bloomFlag) {
+      throw new ParamValidateError('url已存在');
+    }
     const tinyUrl = await this.urlMapService.generatorTinyUrl();
     const date = getDate(params.expire);
 
