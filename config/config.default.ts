@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 import { EggAppConfig, EggAppInfo, PowerPartial } from 'egg';
+import database from './database';
 
 export default (appInfo: EggAppInfo): any => {
   const config = {
@@ -50,7 +51,6 @@ export default (appInfo: EggAppInfo): any => {
         min: 0,
         idle: 10000,
       },
-      logging: true,
       define: {
         timestamps: false,
         paranoid: false,
@@ -58,6 +58,11 @@ export default (appInfo: EggAppInfo): any => {
         underscored: true,
       },
       timezone: '+08:00',
+      ...database.development,
+    },
+    redisConfig: {
+      host: '127.0.0.1',
+      port: 6379,
     },
   };
 

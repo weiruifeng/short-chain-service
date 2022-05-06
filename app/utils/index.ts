@@ -1,5 +1,5 @@
 import { IDateMap } from 'interface';
-import { ParamValidateError } from '../error';
+import { ParamValidateError } from './error';
 import { TABLE, TIMESTAMP } from './constants';
 
 /**

@@ -63,4 +63,15 @@ export default class UrlMapService extends Service {
     });
     await this.bloomFilter.add(info.originalUrl);
   }
+
+  async delByTinyUrl(tinyUrl: string): Promise<number> {
+    const urlMapMData = await this.urlMapDao.getOneMData({ tinyUrl });
+    if (urlMapMData) {
+      const count = await this.urlMapDao.destroy({ id: urlMapMData.id });
+      await this.urlMapRedis.del(tinyUrl);
+      this.urlMapCache.del(tinyUrl);
+      return count;
+    }
+    return 0;
+  }
 }

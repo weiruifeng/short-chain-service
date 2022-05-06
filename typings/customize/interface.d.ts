@@ -26,11 +26,16 @@ declare module 'interface' {
     del: (key: string | string[]) => number;
   }
 
-  interface IParamUrl {
-    url: string,
+  interface IOriginalUrl {
+    originalUrl: string
   }
-  interface ITinyUrl {
 
+  interface ITinyUrl {
+    tinyUrl: string
+  }
+
+  interface IRedirectUrl {
+    url: string
   }
   interface IParamTinyUrl {
     originalUrl: string,
