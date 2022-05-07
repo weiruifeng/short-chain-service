@@ -19,6 +19,8 @@ export default class UrlMapRedis {
   }
 
   async del(key: string | string[]) {
-    return await this.app.redisClient.del(key);
+    if (this.app.redisClient.get(key)) {
+      await this.app.redisClient.del(key);
+    }
   }
 }

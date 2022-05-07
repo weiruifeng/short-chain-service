@@ -1,5 +1,5 @@
 // 判断方式
-export enum UrlMapStatueEnum {
+export enum UrlMapStateEnum {
   Normal = 0,
   Abnormal = 1,
 }

@@ -87,9 +87,12 @@ export default function LRVCache(n: number) {
     });
     return count;
   };
+
+  const showAll = () => map;
   return {
     get,
     set,
     del,
+    showAll,
   };
 }

@@ -1,6 +1,6 @@
 declare module 'interface' {
 
-  type TStatus = 0 | 1;
+  type TState = 0 | 1;
 
   interface IUrlMapCache {
     id: number,
@@ -24,6 +24,7 @@ declare module 'interface' {
     get: (key: string) => unknown;
     set: (key: string, value: unknown) => void;
     del: (key: string | string[]) => number;
+    showAll: () => Map;
   }
 
   interface IOriginalUrl {

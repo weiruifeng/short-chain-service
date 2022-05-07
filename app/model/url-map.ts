@@ -1,6 +1,6 @@
 import { Model, DataTypes, Optional } from 'sequelize';
 import { Application } from 'egg';
-import { TStatus } from 'interface';
+import { TState } from 'interface';
 
 export interface UrlMapAttr {
   id: number;
@@ -9,10 +9,10 @@ export interface UrlMapAttr {
   creator: string;
   createDate: number;
   expireDate: number;
-  status: TStatus;
+  state: TState;
 }
 
-export interface UrlMapCreationAttr extends Optional<UrlMapAttr, 'id' | 'status'> { }
+export interface UrlMapCreationAttr extends Optional<UrlMapAttr, 'id' | 'state'> { }
 export interface UrlMapModel extends
   Model<UrlMapAttr, UrlMapCreationAttr>,
   UrlMapAttr { }
@@ -49,7 +49,7 @@ export default (app: Application) => {
         type: DataTypes.DATE,
         allowNull: false,
       },
-      status: {
+      state: {
         type: DataTypes.TINYINT(),
         allowNull: false,
         defaultValue: 0,

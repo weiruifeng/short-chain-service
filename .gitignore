@@ -3,3 +3,4 @@ logs
 public
 run
 coverage
+.nyc_output

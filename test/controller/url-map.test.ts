@@ -2,13 +2,22 @@ import mock, { MockApplication } from 'egg-mock';
 import { assert } from 'egg-mock/bootstrap';
 import { BLOOM_REDIS_KEY, URL_PTEFIX } from '../../app/utils/constants';
 
+function errorMessage(message: string) {
+  return {
+    success: false,
+    error: {
+      code: 400,
+      message,
+    },
+  };
+}
+
 describe('test/app/controller/url-map.test.ts', () => {
   let app: MockApplication;
 
   before(() => {
     // 创建当前应用的 app 实例
     app = mock.app();
-    mock.consoleLevel('NONE');
     // 等待 app 启动成功，才能执行测试用例
     return app.ready();
   });
@@ -23,16 +32,6 @@ describe('test/app/controller/url-map.test.ts', () => {
         incorrectNumber: 'quws',
         incorrectCharacter: 'quws_^12',
       };
-
-      function errorMessage(message: string) {
-        return {
-          success: false,
-          error: {
-            code: 400,
-            message,
-          },
-        };
-      }
       await app.httpRequest().get(`/${TINY_URL.correct}`)
         .expect(302);
 
@@ -47,6 +46,20 @@ describe('test/app/controller/url-map.test.ts', () => {
       await app.httpRequest().get(`/${TINY_URL.incorrectCharacter}`)
         .expect(200)
         .expect(errorMessage('tinyUrl 参数错误'));
+    });
+
+    it('set error originalUrl', async () => {
+      const originalUrl = 'https://juejin.cn/post/7065585389574029320';
+
+      await app.httpRequest().post('/api/tinyUrl')
+        .send({ creator: 'weiruifeng' })
+        .expect(200)
+        .expect(errorMessage('originalUrl 参数错误'));
+
+      await app.httpRequest().post('/api/tinyUrl')
+        .send({ originalUrl })
+        .expect(200)
+        .expect(errorMessage('creator 参数错误'));
     });
 
     it('The test generates tinyUrl and exchanges originalUrl according to tinyUrl', async () => {
