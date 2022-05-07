@@ -8,7 +8,7 @@
   },
   "types": "typings/index.d.ts",
   "scripts": {
-    "dev": "egg-bin dev --port=8080",
+    "dev": "egg-bin dev --port=8080 --workers=2",
     "debug": "egg-bin debug --port=8080 --workers=2",
     "test-local": "egg-bin test -r egg-ts-helper/register",
     "test": "npm run lint -- --fix && npm run test-local",
@@ -23,7 +23,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "ssh://git@git.sankuai.com/myfe/short-chain-service.git"
+    "url": "ssh://git@github.com:weiruifeng/short-chain-service.git"
   },
   "dependencies": {
     "bloom-filters": "^3.0.0",
