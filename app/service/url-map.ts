@@ -7,6 +7,7 @@ import BloomFilter from './bloom-filter';
 import { encode10To62 } from '../utils';
 import { NOISE_NUMBER } from '../utils/constants';
 import { UrlMapStateEnum } from '../utils/enum';
+import { trace } from '../utils/decorator';
 
 export default class UrlMapService extends Service {
   urlMapDao: UrlMapDao;
@@ -22,16 +23,19 @@ export default class UrlMapService extends Service {
     this.bloomFilter = this.ctx.service.bloomFilter;
   }
 
+  @trace
   async generatorID(): Promise<number> {
     const id = await this.urlMapDao.getMMaxId();
     return id + 1 + NOISE_NUMBER;
   }
 
+  @trace
   async generatorTinyUrl(): Promise<string> {
     const id = await this.generatorID();
     return encode10To62(id);
   }
 
+  @trace
   async getOriginalUrl(tinyUrl: string): Promise<string> {
     const cache = this.urlMapCache.get(tinyUrl);
     if (cache) {
@@ -56,11 +60,13 @@ export default class UrlMapService extends Service {
     return '';
   }
 
+  @trace
   async setInfo(info: IInfo) {
     await this.urlMapDao.create(info);
     await this.bloomFilter.add(info.originalUrl);
   }
 
+  @trace
   async delByTinyUrl(tinyUrl: string): Promise<number> {
     const urlMapMData = await this.urlMapDao.getOneMData({ tinyUrl });
     if (urlMapMData) {

@@ -1,5 +1,6 @@
 import { BaseContextClass, Context } from 'egg';
 import { IPageResponse, IResponse, IPaging } from 'web-api';
+import { trace } from './transaction';
 
 const promiseFunc = {
   data(ctx: Context, data: unknown) {
@@ -29,14 +30,16 @@ const promiseFunc = {
 
 /**
  * 装饰器类型
- * @param _target 类的原型对象
- * @param _propertyKey 所要装饰的属性名
+ * @param target 类的原型对象
+ * @param propertyKey 所要装饰的属性名
  * @param descriptor 该属性的描述对象
  * @param callback 回调函数，promiseFunc 中的 function
  * @return {PropertyDescriptor} descriptor
  */
-function decorator(_target: BaseContextClass, _propertyKey: string, descriptor: PropertyDescriptor, callback: any): PropertyDescriptor {
-  const oldValue = descriptor.value;
+function decorator(target: BaseContextClass, propertyKey: string, descriptor: PropertyDescriptor, callback: any): PropertyDescriptor {
+  // 获取上报装饰器
+  const transactionDescriptor = trace(target, propertyKey, descriptor);
+  const oldValue = transactionDescriptor.value;
   descriptor.value = function newValue() {
     // eslint-disable-next-line prefer-rest-params
     const promise = oldValue.apply(this, arguments);
